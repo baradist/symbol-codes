@@ -31,14 +31,14 @@ public class Main {
         if (message.isEmpty()) {
             exit = true;
             System.out.println("Set a message:\n" +
-                    "-m <message>");
+                    "-m \"<message>\"");
         }
         if (exit) {
             return;
         }
 
-        System.out.println(algorithm);
-        System.out.println(message);
+        System.out.println("Algorithm: " + algorithm);
+        System.out.println("Message: " + message);
 
         Codable codable = null;
         switch (algorithm) {

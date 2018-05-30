@@ -9,9 +9,11 @@ import java.util.stream.Collectors;
 
 public class ShannonFano implements Codable {
     private List<SymbolToCode> symbolToCodes;
+    private int totalSymbolsAmount;
 
     @Override
     public List<SymbolToCode> getCodes(String s) {
+        totalSymbolsAmount = s.length();
         char[] chars = s.toCharArray();
         List<Character> list = new ArrayList<>(s.length());
         for (char c : chars) {
@@ -41,6 +43,17 @@ public class ShannonFano implements Codable {
                 .orElse(Double.NaN);
     }
 
+    @Override
+    public double getEntropy() {
+        if (symbolToCodes == null) {
+            throw new RuntimeException("Call getCodes first");
+        }
+        return symbolToCodes.stream()
+                .mapToDouble(symbolToCode -> ((double) symbolToCode.getCount()) / totalSymbolsAmount)
+                .map(raiting -> raiting * log2(raiting))
+                .sum();
+    }
+
     private void fillCodes(SymbolToCode[] array, int start, int end, String partOfCode) {
         long sum = 0;
         for (int i = start; i <= end; i++) {
@@ -61,5 +74,9 @@ public class ShannonFano implements Codable {
 
         fillCodes(array, start, middle, "0");
         fillCodes(array, middle + 1, end, "1");
+    }
+
+    private static double log2(double x) {
+        return Math.log(x) / Math.log(2);
     }
 }

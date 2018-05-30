@@ -8,4 +8,6 @@ public interface Codable {
     List<SymbolToCode> getCodes(String s);
 
     double getAverageLenght();
+
+    double getEntropy();
 }

@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class ShannonFanoTest {
     private Codable codable;
@@ -25,6 +25,7 @@ public class ShannonFanoTest {
         final List<SymbolToCode> codes = codable.getCodes(s);
         codes.forEach(System.out::println);
         System.out.println("Average lenght of symbols is " + codable.getAverageLenght());
+        System.out.println("Entropy is " + codable.getEntropy());
 
         assertThat(codes.size(), is(17));
     }
