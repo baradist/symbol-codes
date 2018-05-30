@@ -2,6 +2,7 @@ package cf.baradist;
 
 import cf.baradist.algorithms.Algorithm;
 import cf.baradist.algorithms.Codable;
+import cf.baradist.algorithms.Huffman;
 import cf.baradist.algorithms.ShannonFano;
 
 import java.util.Arrays;
@@ -46,10 +47,12 @@ public class Main {
                 codable = new ShannonFano();
                 break;
             case H:
-                throw new RuntimeException("Hasn't been realized yet");
+                codable = new Huffman();
+                break;
         }
         codable.getCodes(message).forEach(System.out::println);
         System.out.println("Average lenght of symbols is " + codable.getAverageLenght());
+        System.out.println("Entropy is " + codable.getEntropy());
     }
 
     private static Algorithm getAlgorithmFromString(String str) {
