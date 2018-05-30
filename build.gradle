@@ -1,0 +1,33 @@
+group 'cf.baradist'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'application'
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+dependencies {
+    testCompile 'junit:junit:4.8.1'
+    testCompile 'org.mockito:mockito-core:2.18.3'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.6'
+}
+
+mainClassName = 'cf.baradist.Main'
+
+jar {
+    archiveName = 'symbol-codes.jar'
+    manifest {
+        attributes 'Build-Jdk': System.getProperty('java.version')
+        attributes 'Built-By': System.getProperty('user.name')
+        attributes 'Creation-Time': new Date().format('MM/dd/yyyy HH:mm:ss.SSS a z', TimeZone.getTimeZone('UTC'))
+        attributes 'Created-By': "Gradle ${project.getGradle().getGradleVersion()}"
+        attributes 'Main-Class': mainClassName
+    }
+}
