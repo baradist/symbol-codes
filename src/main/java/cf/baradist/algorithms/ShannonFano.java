@@ -52,8 +52,11 @@ public class ShannonFano implements Codable {
         }
         long half = 0;
         int middle;
-        for (middle = end; middle > start && half * 2 < sum; middle--) {
+        for (middle = start; middle < end; middle++) {
             half += array[middle].getCount();
+            if (half * 2 >= sum) {
+                break;
+            }
         }
 
         fillCodes(array, start, middle, "0");
