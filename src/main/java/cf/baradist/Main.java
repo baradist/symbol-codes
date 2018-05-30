@@ -1,15 +1,62 @@
 package cf.baradist;
 
+import cf.baradist.algorithms.Algorithm;
 import cf.baradist.algorithms.Codable;
 import cf.baradist.algorithms.ShannonFano;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class Main {
     public static void main(String[] args) {
-        String s = "No kidding, Lorenzo called off his trip to visit Mexico City just because they told him the conquistadores were extinct";
-        System.out.println(s);
+        Algorithm algorithm = null;
+        String message = "";
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals("-a")) {
+                algorithm = getAlgorithmFromString(args[++i]);
+            } else if (args[i].equals("-m")) {
+                message = args[++i];
+            }
+        }
+        boolean exit = false;
+        if (algorithm == null) {
+            exit = true;
+            System.out.println("Set an algorithm:\n" +
+                    "-a <algorithm>\n" +
+                    "possible values: ");
+            System.out.println(Arrays.stream(Algorithm.values())
+                    .map(a -> a.name() + " - " + a.toString())
+                    .collect(Collectors.joining(", ")));
+        }
+        if (message.isEmpty()) {
+            exit = true;
+            System.out.println("Set a message:\n" +
+                    "-m <message>");
+        }
+        if (exit) {
+            return;
+        }
 
-        Codable codable = new ShannonFano();
-        codable.getCodes(s).forEach(System.out::println);
+        System.out.println(algorithm);
+        System.out.println(message);
+
+        Codable codable = null;
+        switch (algorithm) {
+            case SF:
+                codable = new ShannonFano();
+                break;
+            case H:
+                throw new RuntimeException("Hasn't been realized yet");
+        }
+        codable.getCodes(message).forEach(System.out::println);
         System.out.println("Average lenght of symbols is " + codable.getAverageLenght());
+    }
+
+    private static Algorithm getAlgorithmFromString(String str) {
+        try {
+            return Algorithm.valueOf(str.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 }
