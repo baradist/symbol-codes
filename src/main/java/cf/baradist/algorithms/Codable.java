@@ -1,13 +1,17 @@
 package cf.baradist.algorithms;
 
-import cf.baradist.SymbolToCode;
-
-import java.util.List;
-
 public interface Codable {
-    List<SymbolToCode> getCodes(String s);
+    void code(String s);
+
+    String decode(String codedMessage);
+
+    String gedCodedMessage();
 
     double getAverageLenght();
 
     double getEntropy();
+
+    void printCodes();
+
+    void printVerbose();
 }

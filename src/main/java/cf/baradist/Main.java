@@ -39,7 +39,6 @@ public class Main {
         }
 
         System.out.println("Algorithm: " + algorithm);
-        System.out.println("Message: " + message);
 
         Codable codable = null;
         switch (algorithm) {
@@ -50,9 +49,9 @@ public class Main {
                 codable = new Huffman();
                 break;
         }
-        codable.getCodes(message).forEach(System.out::println);
-        System.out.println("Average lenght of symbols is " + codable.getAverageLenght());
-        System.out.println("Entropy is " + codable.getEntropy());
+        codable.code(message);
+        codable.printVerbose();
+
     }
 
     private static Algorithm getAlgorithmFromString(String str) {
