@@ -12,9 +12,9 @@ You supposed to have jdk8+ installed
 `./gradlew build (or gradlew.bat build on Windows)`
 
 ## Run
-`java -jar build/libs/symbol-codes.jar -a \<algorithm> -m "\<message>"`
+`java -jar build/libs/symbol-codes.jar -a <algorithm> -m "<message>"`
 
-(on Windows: `java -jar build\libs\symbol-codes.jar -a \<algorithm> -m "\<message>"`)
+(on Windows: `java -jar build\libs\symbol-codes.jar -a <algorithm> -m "<message>"`)
 
 For instance: 
 
