@@ -1,4 +1,4 @@
-package cf.baradist;
+package cf.baradist.algorithms;
 
 public final class SymbolToCode {
     private final char symbol;
@@ -15,8 +15,18 @@ public final class SymbolToCode {
         return new SymbolToCode(this.symbol, this.count, this.code + codePart);
     }
 
-    public long getCount() {
+    public static int compareCounts(SymbolToCode o1, SymbolToCode o2) {
+        if (o1.getCount() == o2.getCount()) {
+            return 0;
+        }
+        return (o1.getCount() - o2.getCount()) > 0 ? -1 : 1;
+    }
 
+    public char getSymbol() {
+        return symbol;
+    }
+
+    public long getCount() {
         return count;
     }
 

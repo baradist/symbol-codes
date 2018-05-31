@@ -1,24 +1,18 @@
 package cf.baradist.algorithms;
 
-import cf.baradist.SymbolToCode;
-
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ShannonFano extends AbstractCoding {
 
     @Override
-    public List<SymbolToCode> getCodes(String s) {
+    public void code(String s) {
+        message = s;
         totalSymbolsAmount = s.length();
-        char[] chars = s.toCharArray();
-        List<Character> list = new ArrayList<>(s.length());
-        for (char c : chars) {
-            list.add(c);
-        }
 
-        SymbolToCode[] array = list.stream()
+        SymbolToCode[] array = s.codePoints()
+                .mapToObj(c -> (char) c)
                 .collect(Collectors.groupingBy(character -> character, Collectors.counting()))
                 .entrySet().stream()
                 .map(entry -> new SymbolToCode(entry.getKey(), entry.getValue(), ""))
@@ -27,7 +21,25 @@ public class ShannonFano extends AbstractCoding {
         fillCodes(array, 0, array.length - 1, "");
 
         symbolToCodes = Arrays.asList(array);
-        return symbolToCodes;
+
+        fillCodedMessage();
+    }
+
+    @Override
+    public String decode(String codedString) {
+        Map<String, Character> map = symbolToCodes.stream()
+                .collect(Collectors.toMap(SymbolToCode::getCode, SymbolToCode::getSymbol));
+        StringBuilder sb = new StringBuilder();
+        int caret = 1;
+        int codeStart = 0;
+        while (caret <= codedString.length()) {
+            String codeCandidate = codedString.substring(codeStart, caret++);
+            if (map.containsKey(codeCandidate)) {
+                sb.append(map.get(codeCandidate));
+                codeStart = caret - 1;
+            }
+        }
+        return sb.toString();
     }
 
     private void fillCodes(SymbolToCode[] array, int start, int end, String partOfCode) {

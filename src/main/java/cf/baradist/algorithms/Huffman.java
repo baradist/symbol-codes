@@ -1,29 +1,22 @@
 package cf.baradist.algorithms;
 
-import cf.baradist.SymbolToCode;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Huffman extends AbstractCoding {
+    private Node tree;
 
     @Override
-    public List<SymbolToCode> getCodes(String s) {
+    public void code(String s) {
+        message = s;
         totalSymbolsAmount = s.length();
-        char[] chars = s.toCharArray();
-        List<Character> list = new ArrayList<>(s.length());
-        for (char c : chars) {
-            list.add(c);
-        }
 
-        List<Node> nodeList = list.stream()
+        List<Node> nodeList = s.codePoints()
+                .mapToObj(c -> (char) c)
                 .collect(Collectors.groupingBy(character -> character, Collectors.counting()))
                 .entrySet().stream()
                 .map(entry -> new NodeWithSymbol(entry.getValue(), entry.getKey()))
                 .collect(Collectors.toList());
-
 
         PriorityQueue<Node> queue = new PriorityQueue(nodeList);
         while (queue.size() > 1) {
@@ -33,10 +26,38 @@ public class Huffman extends AbstractCoding {
         }
         symbolToCodes = new ArrayList<>(nodeList.size());
 
-        fillSymbolToCodes(queue.poll(), "");
+        tree = queue.poll();
+        fillSymbolToCodes(tree, "");
 
-        symbolToCodes.sort((o1, o2) -> (o1.getCount() - o2.getCount()) > 0 ? -1 : 1);
-        return symbolToCodes;
+        fillCodedMessage();
+
+        symbolToCodes.sort(SymbolToCode::compareCounts);
+    }
+
+    @Override
+    public String decode(String codedString) {
+        StringBuilder sb = new StringBuilder();
+        LinkedList<Character> characters = codedString.codePoints().mapToObj(c -> (char) c)
+                .collect(Collectors.toCollection(LinkedList::new));
+
+        while (!characters.isEmpty()) {
+            sb.append(decode(characters, tree));
+        }
+        return sb.toString();
+    }
+
+    private Character decode(Queue<Character> characters, Node node) {
+        if (node instanceof NodeWithSymbol) {
+            return ((NodeWithSymbol) node).symbol;
+        } else if (node instanceof NodeOfNodes) {
+            Character character = characters.poll();
+            if (Objects.requireNonNull(character) == '0') {
+                return decode(characters, ((NodeOfNodes) node).left);
+            } else if (Objects.requireNonNull(character) == '1') {
+                return decode(characters, ((NodeOfNodes) node).right);
+            }
+        }
+        return null;
     }
 
     private void fillSymbolToCodes(Node node, String prefix) {
