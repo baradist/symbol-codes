@@ -27,9 +27,8 @@ public abstract class AbstractCoding implements Codable {
             throw new RuntimeException("Call code() first");
         }
         return symbolToCodes.stream()
-                .mapToDouble(symbolToCode -> symbolToCode.getCode().length())
-                .average()
-                .orElse(Double.NaN);
+                .mapToDouble(symbolToCode -> symbolToCode.getCode().length() * symbolToCode.getCount())
+                .sum() / totalSymbolsAmount;
     }
 
     @Override
