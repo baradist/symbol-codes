@@ -52,6 +52,9 @@ public class Main {
         codable.code(message);
         codable.printVerbose();
 
+        String codedMessage = codable.gedCodedMessage();
+        System.out.println("Coded message is:\n" + codedMessage);
+        System.out.println("Decoded message is\n" + codable.decode(codedMessage));
     }
 
     private static Algorithm getAlgorithmFromString(String str) {

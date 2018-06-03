@@ -51,13 +51,18 @@ public class ShannonFano extends AbstractCoding {
         if (start >= end) {
             return;
         }
-        long half = 0;
+        long moreThenAHalf = 0;
+        long lessThenAHalf = 0;
         int middle;
         for (middle = start; middle < end; middle++) {
-            half += array[middle].getCount();
-            if (half * 2 >= sum) {
+            lessThenAHalf = moreThenAHalf;
+            moreThenAHalf += array[middle].getCount();
+            if (moreThenAHalf * 2 >= sum) {
                 break;
             }
+        }
+        if (moreThenAHalf * 2 - sum > sum - lessThenAHalf * 2) {
+            middle--;
         }
 
         fillCodes(array, start, middle, "0");
