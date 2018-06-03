@@ -56,6 +56,10 @@ public abstract class AbstractCoding implements Codable {
         return codedMessage;
     }
 
+    public int getTotalSymbolsAmount() {
+        return totalSymbolsAmount;
+    }
+
     @Override
     public void printCodes() {
         if (symbolToCodes == null) {
@@ -69,6 +73,7 @@ public abstract class AbstractCoding implements Codable {
         printCodes();
         System.out.println("Message:\n" + message);
         System.out.println("Average lenght of symbols is " + getAverageLenght());
+        System.out.println("Symbols amount is " + getTotalSymbolsAmount());
         System.out.println("Entropy is " + getEntropy());
 
         System.out.println("Original message is\n" + decode(gedCodedMessage()));
